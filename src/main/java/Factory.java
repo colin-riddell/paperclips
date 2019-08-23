@@ -67,9 +67,5 @@ public class Factory implements Runnable{
         while(wire.get() > 0 ){
             this.runAutoClipper();
         }
-        System.out.println("unsold inventory: " + unsoldInventory.get());
-        System.out.println("wire: " + wire.get());
-        System.out.println("created paperclips: " + createdPaperclips.get());
-        
     }
 }
