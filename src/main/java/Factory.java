@@ -1,27 +1,32 @@
-public class Factory {
+import java.util.concurrent.atomic.AtomicInteger;
 
-    private long createdPaperclips;
-    private long wire;
+public class Factory implements Runnable{
+
+    AtomicInteger createdPaperclips = new AtomicInteger(0); // a global counter
+
+    //private long createdPaperclips;
+     AtomicInteger  wire = new AtomicInteger(1000);
     private long clipsPersSecond;
-    private long unsoldInventory;
+     AtomicInteger unsoldInventory = new AtomicInteger(0);
+
 
     public Factory() {
-        this.wire = 1000;
+
     }
 
-    public long getCreatedPaperclips() {
+    public AtomicInteger getCreatedPaperclips() {
         return createdPaperclips;
     }
 
-    public void setCreatedPaperclips(long createdPaperclips) {
+    public void setCreatedPaperclips(AtomicInteger createdPaperclips) {
         this.createdPaperclips = createdPaperclips;
     }
 
-    public long getWire() {
+    public AtomicInteger getWire() {
         return wire;
     }
 
-    public void setWire(long wire) {
+    public void setWire(AtomicInteger wire) {
         this.wire = wire;
     }
 
@@ -33,19 +38,38 @@ public class Factory {
         this.clipsPersSecond = clipsPersSecond;
     }
 
-    public long getUnusedInventory() {
+    public AtomicInteger getUnsoldInventory() {
         return unsoldInventory;
     }
 
-    public void setUnusedInventory(long unusedInventory) {
+    public void setUnsoldInventory(AtomicInteger unusedInventory) {
         this.unsoldInventory = unusedInventory;
     }
 
     public void makePaperclip(){
-        if (wire > 0) {
-            this.wire -= 1;
-            this.createdPaperclips += 1;
-            this.unsoldInventory += 1;
+        wire.decrementAndGet();
+        createdPaperclips.incrementAndGet();
+        unsoldInventory.incrementAndGet();
+    }
+
+    public void runAutoClipper(){
+
+        System.out.println(Thread.currentThread().getName() + ": " + createdPaperclips.get());
+            makePaperclip();
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+    }
+    public void run() {
+        while(wire.get() > 0 ){
+            this.runAutoClipper();
+        }
+        System.out.println("unsold inventory: " + unsoldInventory.get());
+        System.out.println("wire: " + wire.get());
+        System.out.println("created paperclips: " + createdPaperclips.get());
+        
     }
 }
