@@ -14,8 +14,7 @@ public class PaperclipsTest {
 
     @After
     public void after(){
-        Inject
-        Inject.field("thatStaticField").of(thatObjectWithStaticFields).with("default value");
+       
 
     }
 
