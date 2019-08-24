@@ -5,7 +5,10 @@ import static org.junit.Assert.assertEquals;
 
 public class FactorTests {
 
-
+    @Before
+    public void before(){
+        Factory.setClipperDelay(3);
+    }
 
 
     @Test
@@ -42,4 +45,31 @@ public class FactorTests {
         }
         assertEquals(1000, factory.getUnsoldInventory().get());
     }
+
+    @Test
+    public void canRunAutoClipperAndAddWire(){
+        Factory  factory = new Factory();
+        // start the autoclipper
+        Thread thread = new Thread(factory);
+        thread.start();
+
+        // wait a second
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // add more wire
+        Factory.setWire(500);
+
+        // wait on thread
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertEquals(1500, factory.getUnsoldInventory().get());
+    }
+
+
 }

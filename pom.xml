@@ -16,6 +16,11 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>beaninject</groupId>
+            <artifactId>beaninject</artifactId>
+            <version>0.6</version>
+        </dependency>
     </dependencies>
 
 

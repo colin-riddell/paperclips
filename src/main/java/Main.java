@@ -23,6 +23,9 @@ public class Main {
                     showStatus(factory);
                     break;
                 case "add autoclipper":
+                    Paperclips paperclips   = new Paperclips(factory);
+                    paperclips.addAutoClipper();
+                    paperclips.startAutoClippers();
                     // TODO: add an autoclipper thread
                      break;
                 default:

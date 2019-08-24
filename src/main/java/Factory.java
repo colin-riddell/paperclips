@@ -1,17 +1,25 @@
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Factory implements Runnable{
+public class Factory implements Runnable {
 
-    AtomicInteger createdPaperclips = new AtomicInteger(0); // a global counter
-
-    //private long createdPaperclips;
-     AtomicInteger  wire = new AtomicInteger(1000);
+    private AtomicInteger createdPaperclips = new AtomicInteger(0);
+    private static AtomicInteger  wire = new AtomicInteger(1000);
     private long clipsPersSecond;
-     AtomicInteger unsoldInventory = new AtomicInteger(0);
+    private AtomicInteger unsoldInventory = new AtomicInteger(0);
+
+    private static int clipperDelay = 1000; // the clip rate shared across all clippers
 
 
     public Factory() {
 
+    }
+
+    public static int getClipperDelay() {
+        return clipperDelay;
+    }
+
+    public static void setClipperDelay(int clipperDelay) {
+        Factory.clipperDelay = clipperDelay;
     }
 
     public AtomicInteger getCreatedPaperclips() {
@@ -26,10 +34,10 @@ public class Factory implements Runnable{
         return wire;
     }
 
-    public void setWire(AtomicInteger wire) {
-        this.wire = wire;
-    }
 
+    public static void setWire(int wireToAdd){
+        wire.compareAndSet(wire.get(), wire.get()+ wireToAdd);
+    }
     public long getClipsPersSecond() {
         return clipsPersSecond;
     }
@@ -66,6 +74,11 @@ public class Factory implements Runnable{
     public void run() {
         while(wire.get() > 0 ){
             this.runAutoClipper();
+            try {
+                Thread.sleep(clipperDelay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
