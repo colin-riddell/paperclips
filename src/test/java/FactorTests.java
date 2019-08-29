@@ -1,5 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
+import views.StatusView;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,7 +14,7 @@ public class FactorTests {
 
     @Test
     public void canMakeOnePaperclip(){
-        Factory  factory = new Factory();
+        Factory  factory = new Factory(new StatusView());
 
         //given we have a factory
 
@@ -34,7 +35,7 @@ public class FactorTests {
 
     @Test
     public void canRunAutoClipper(){
-        Factory  factory = new Factory();
+        Factory  factory = new Factory(new StatusView());
 
         Thread thread = new Thread(factory);
         thread.start();
@@ -48,7 +49,7 @@ public class FactorTests {
 
     @Test
     public void canRunAutoClipperAndAddWire(){
-        Factory  factory = new Factory();
+        Factory  factory = new Factory(new StatusView());
         // start the autoclipper
         Thread thread = new Thread(factory);
         thread.start();

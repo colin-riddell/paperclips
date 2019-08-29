@@ -1,3 +1,5 @@
+import views.StatusView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -5,10 +7,13 @@ public class Paperclips {
 
     private List<Thread> threads;
     private Factory factory;
+    private StatusView view;
 
     public Paperclips(Factory factory) {
         this.factory = factory;
         threads = new ArrayList<>();
+        this.view = new StatusView();
+
     }
 
     public List<Thread> getThreads() {
@@ -32,7 +37,6 @@ public class Paperclips {
     public void startAutoClippers(){
         for(Thread thread: this.threads){
             if (!thread.isAlive()){
-                System.out.println("!!  starting clipper ...");
                 thread.start();
             }
         }
@@ -40,7 +44,6 @@ public class Paperclips {
 
     public void joinAutoClippers(){
         for(Thread thread: this.threads){
-            System.out.println("!!  joining clipper ...");
             try {
                 thread.join();
             } catch (InterruptedException e) {

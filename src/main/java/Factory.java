@@ -1,3 +1,10 @@
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.internal.operators.observable.ObservableCreate;
+import views.StatusView;
+import views.ViewModel;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Factory implements Runnable {
@@ -10,9 +17,25 @@ public class Factory implements Runnable {
     private static int clipperDelay = 1000; // the clip rate shared across all clippers
 
 
-    public Factory() {
+    Observable<ViewModel> observable = new ObservableCreate<ViewModel>(new ObservableOnSubscribe<ViewModel>() {
+        @Override
+        public void subscribe(ObservableEmitter<ViewModel> emitter) throws Exception {
+            emitter.onNext(new ViewModel(createdPaperclips.get(),
+                    wire.get(),
+                    clipsPersSecond,
+                    unsoldInventory.get()
+            ));
+            emitter.onComplete();
+        }
+    });
 
+
+    private StatusView view;
+    public Factory(StatusView view) {
+        this.view = view;
     }
+
+
 
     public static int getClipperDelay() {
         return clipperDelay;
@@ -60,10 +83,12 @@ public class Factory implements Runnable {
         unsoldInventory.incrementAndGet();
     }
 
-    public void runAutoClipper(){
 
-        System.out.println(Thread.currentThread().getName() + ": " + createdPaperclips.get());
-            makePaperclip();
+    public void runAutoClipper(){
+        makePaperclip();
+        observable.subscribe(view);
+
+
         try {
             Thread.sleep(5);
         } catch (InterruptedException e) {
@@ -81,4 +106,5 @@ public class Factory implements Runnable {
             }
         }
     }
+
 }

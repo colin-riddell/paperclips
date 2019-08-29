@@ -17,9 +17,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>beaninject</groupId>
-            <artifactId>beaninject</artifactId>
-            <version>0.6</version>
+            <groupId>io.reactivex.rxjava3</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>3.0.0-RC2</version>
         </dependency>
     </dependencies>
 

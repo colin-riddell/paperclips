@@ -1,3 +1,5 @@
+import views.StatusView;
+
 import java.util.Scanner;
 
 public class Main {
@@ -9,18 +11,18 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Factory factory = new Factory();
-        showStatus(factory);
-        System.out.println("What do you want to do:");
+        Factory factory = new Factory(new StatusView());
 
         while(true){
+            //showStatus(factory);
+            //System.out.println("What do you want to do:");
+
             Scanner myObj = new Scanner(System.in);
             String command = myObj.nextLine();
             switch(command) {
                 case "clip":
                     // code block
                     factory.makePaperclip();
-                    showStatus(factory);
                     break;
                 case "add autoclipper":
                     Paperclips paperclips   = new Paperclips(factory);
